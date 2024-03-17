@@ -11,7 +11,8 @@ const dbConnection = {
 
 const app = async () => {
   try {
-    const db = DB(dbConnection)
+    const db = await DB(dbConnection)
+
 
     // const dbHandlers = await db.start()
     // const alarmInterviewer = alarmInterviewerFactory()

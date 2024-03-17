@@ -3,6 +3,7 @@ import HistoryModel from './models/HistoryModel.js'
 import RegionModel from './models/RegionModel.js'
 import StatusModel from './models/StatusModel.js'
 import setupDb from './setup.js'
+import createCrud from './models/createCrud.js'
 
 const db = async (connectionData) => {
   try {
@@ -24,19 +25,26 @@ const db = async (connectionData) => {
     Status.hasMany(History, { onDelete: 'cascade' })
     History.belongsTo(Status)
 
-
     // await sequelize.sync({ force: true })
-    await sequelize.sync({ alter: true });
-
+    await sequelize.sync({ alter: true })
+    
     await setupDb(sequelize)
 
     console.log('Db has been started')
+
+    // create handlers
+    const handlers = {
+      history: createCrud(History),
+      status: createCrud(Status),
+      region: createCrud(Region),
+    }
+
+    return handlers
   } catch (error) {
     console.error('DB error:', error)
     process.exit(1)
   }
   return {
-    start: (opt = {}) => {},
     stop: () => {
       if (db) {
         db.close()
