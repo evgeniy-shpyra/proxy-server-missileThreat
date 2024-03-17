@@ -35,9 +35,32 @@ const statusesData = [
 ]
 
 const setupDb = async (sequelize) => {
+  const RegionModel = sequelize.models.region
+  const StatusModel = sequelize.models.status
 
-  // const RegionModel = 
+  for (const region of regionsData) {
+    const count = await RegionModel.count({
+      where: {
+        external_id: region.id,
+      },
+    })
 
+    if (!count) {
+      await RegionModel.create({ name: region.name, external_id: region.id })
+    }
+  }
+
+  for (const status of statusesData) {
+    const count = await StatusModel.count({
+      where: {
+        external_id: status.id,
+      },
+    })
+
+    if (!count) {
+      await StatusModel.create({ name: status.name, external_id: status.id })
+    }
+  }
 }
 
 export default setupDb

@@ -2,38 +2,39 @@ import { Sequelize } from 'sequelize'
 import HistoryModel from './models/HistoryModel.js'
 import RegionModel from './models/RegionModel.js'
 import StatusModel from './models/StatusModel.js'
+import setupDb from './setup.js'
 
 const db = async (connectionData) => {
-  const { password, user, port, name, host } = connectionData
-
-  const sequelize = new Sequelize(
-    `postgres://${user}:${password}@${host}:${port}/${name}`
-  )
-
-  // testing the connection
   try {
+    const { password, user, port, name, host } = connectionData
+
+    const sequelize = new Sequelize(
+      `postgres://${user}:${password}@${host}:${port}/${name}`
+    )
+
     await sequelize.authenticate()
+
+    // init models
+    const History = await HistoryModel(sequelize)
+    const Region = await RegionModel(sequelize)
+    const Status = await StatusModel(sequelize)
+
+    Region.hasMany(History, { onDelete: 'cascade' })
+    History.belongsTo(Region)
+    Status.hasMany(History, { onDelete: 'cascade' })
+    History.belongsTo(Status)
+
+
+    // await sequelize.sync({ force: true })
+    await sequelize.sync({ alter: true });
+
+    await setupDb(sequelize)
+
+    console.log('Db has been started')
   } catch (error) {
-    console.error('Unable to connect to the database:', error)
+    console.error('DB error:', error)
     process.exit(1)
   }
-
-  // init models
-  const History = HistoryModel(sequelize)
-  const Region = RegionModel(sequelize)
-  const Status = StatusModel(sequelize)
-
-  Region.hasMany(History)
-  History.belongsTo(Region)
-
-  Status.hasMany(History)
-  History.belongsTo(Status)
-
-  await setupDb(sequelize)
-
-  await sequelize.sync({ force: true })
-  // await sequelize.sync({ alter: true });
-
   return {
     start: (opt = {}) => {},
     stop: () => {

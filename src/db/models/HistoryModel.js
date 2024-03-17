@@ -1,15 +1,15 @@
 import { DataTypes } from 'sequelize'
 
-const HistoryModel = (sequelize) => {
-  const History = sequelize.define(
+const HistoryModel = async (sequelize) => {
+  const History = await sequelize.define(
     'history',
     {
       regionId: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       statusId: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false,
       }
     },

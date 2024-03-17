@@ -1,17 +1,21 @@
-import { DataTypes } from "sequelize"
+import { DataTypes } from 'sequelize'
 
 const RegionModel = async (sequelize) => {
-  const Region = sequelize.define(
+  const Region = await sequelize.define(
     'region',
     {
-      name: {
-        type: DataTypes.String,
-        allowNull: false
+      external_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: true
       },
-      
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
-      updatedAt: false
+      updatedAt: false,
     }
   )
 
