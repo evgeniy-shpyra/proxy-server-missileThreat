@@ -1,20 +1,22 @@
-import alarm from "../api/alarm.js"
-import wait from "../utils/wait.js"
+import alarm from '../api/alarm.js'
+import wait from '../utils/wait.js'
 
-const alarmInterviewer = () => {
-  const alarmApi = alarm()
+const alarmInterviewer = (callback, { interval, apiToken }) => {
+
+  const alarmApi = alarm(apiToken)
 
   let isWork = false
 
   return {
-    start: async (interval = 20_000) => {
+    start: async () => {
       isWork = true
       const time = new Date()
 
       while (isWork) {
         if (Date.now() >= time) {
           const data = await alarmApi.getActive()
-          console.log(data)
+          if (!data) continue
+          callback && callback(data)
           time.setMilliseconds(time.getMilliseconds() + interval)
         }
 

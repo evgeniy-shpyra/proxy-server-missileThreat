@@ -1,34 +1,32 @@
 import DB from './db/index.js'
 import alarmInterviewerFactory from './services/alarmInterviewer.js'
-
-const dbConnection = {
-  password: process.env.POSTGRES_PASSWORD,
-  user: process.env.POSTGRES_USER,
-  port: process.env.POSTGRES_PORT,
-  name: process.env.POSTGRES_DB,
-  host: process.env.POSTGRES_HOST,
-}
+import config from './config.json' assert { type: 'json' };
 
 const app = async () => {
+
   try {
-    const db = await DB(dbConnection)
+    const db = DB(config.db)
+    const dbHandlers = await db.start()
 
+    const handleFetchAlarms = (data) => {
+      console.log(data)
+    }
 
-    // const dbHandlers = await db.start()
-    // const alarmInterviewer = alarmInterviewerFactory()
-    // alarmInterviewer.start()
+    const alarmInterviewer = alarmInterviewerFactory(handleFetchAlarms, config.alarm)
+    alarmInterviewer.start()
 
-    // const shutdownMaxWait = 3000
+    const shutdownMaxWait = 3000
 
-    // process.on("SIGINT", shutdown)
-    // process.on("SIGTERM", shutdown)
+    process.on("SIGINT", shutdown)
+    process.on("SIGTERM", shutdown)
 
-    // function shutdown() {
-    //   console.log("closing with grace...")
-    //   alarmInterviewer.stop()
+    function shutdown() {
+      console.log("closing with grace...")
+      alarmInterviewer.stop()
+      db.stop()
 
-    //   setTimeout(() => process.exit(1), shutdownMaxWait).unref()
-    // }
+      setTimeout(() => process.exit(1), shutdownMaxWait).unref()
+    }
   } catch (e) {
     console.log(e)
   }
