@@ -8,8 +8,10 @@ const app = async () => {
     const db = DB(config.db)
     const dbHandlers = await db.start()
 
-    const handleFetchAlarms = (data) => {
-      console.log(data)
+    const handleFetchAlarms = async (data) => {
+      for(const item of data){
+        await dbHandlers.history.create(item)
+      }
     }
 
     const alarmInterviewer = alarmInterviewerFactory(handleFetchAlarms, config.alarm)
