@@ -15,9 +15,7 @@ const app = async () => {
 
 
     const handleFetchAlarms = async (data) => {
-      for (const item of data) {
-        await dbHandlers.history.create(item)
-      }
+      await dbHandlers.history.bulkCreate(data)
     }
 
     // fetch alarms
