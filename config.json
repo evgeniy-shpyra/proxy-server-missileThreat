@@ -1,7 +1,7 @@
 {
   "db": {
     "user": "postgres",
-    "password": "1111",
+    "password": "1234",
     "name": "alarm",
     "host": "localhost",
     "port": 5432
@@ -9,5 +9,12 @@
   "alarm": {
     "apiToken": "126fd4a4c5c9548316d82cf8acbf137cf399979aab2203",
     "interval": 20000
+  },
+  "app": {
+    "shutdownMaxWait": 5000
+  },
+  "http": {
+    "port": 3000,
+    "host": null
   }
 }

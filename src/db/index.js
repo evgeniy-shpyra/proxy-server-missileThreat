@@ -33,7 +33,6 @@ const db = (connectionData) => {
         await setupDb(sequelize)
 
         console.log('Db has been started')
-
         // create handlers
         const handlers = {
           history: createCrud(History),
@@ -50,7 +49,7 @@ const db = (connectionData) => {
     stop: async () => {
       if (sequelize) {
         await sequelize.close()
-        console.log('Db was closed')
+        console.log('Db has been stopped')
       }
     },
   }

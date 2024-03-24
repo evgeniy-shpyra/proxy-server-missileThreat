@@ -20,8 +20,10 @@ const alarmInterviewer = (callback, { interval, apiToken }) => {
           time.setMilliseconds(time.getMilliseconds() + interval)
         }
 
+        if(!isWork) break
         await wait(1000)
       }
+      console.log('Alarm has been stopped')
     },
     stop: () => {
       isWork = false
