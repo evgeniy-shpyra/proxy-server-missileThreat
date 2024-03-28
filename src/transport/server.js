@@ -1,5 +1,5 @@
 import Fastify from 'fastify'
-import websocket from '@fastify/websocket'
+import initWebsocket from './ws.js'
 
 const server = (opt = {}) => {
   const host = opt.host
@@ -7,20 +7,6 @@ const server = (opt = {}) => {
 
   const fastify = Fastify({ logger: false })
 
-  fastify.register(websocket)
-  fastify.register(async function (fastify) {
-    fastify.get('/ws', { websocket: true }, (socket, req) => {
-      socket.on('message', (message) => {
-        console.log('ws:', message)
-        socket.send('hi from server')
-      })
-    })
-  })
-
-  fastify.get('/', async function handler(request, reply) {
-    console.log('get')
-    return { hello: 'world' }
-  })
 
   return {
     start: async () => {
@@ -36,6 +22,7 @@ const server = (opt = {}) => {
       await fastify.close()
       console.log('Server has been stopped')
     },
+    server: fastify,
   }
 }
 

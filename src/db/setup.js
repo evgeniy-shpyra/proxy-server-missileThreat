@@ -1,3 +1,5 @@
+import crypto from 'node:crypto'
+
 const regionsData = [
   { id: 29, name: 'Автономна Республіка Крим' },
   { id: 8, name: 'Волинська область' },
@@ -37,6 +39,7 @@ const statusesData = [
 const setupDb = async (sequelize) => {
   const RegionModel = sequelize.models.region
   const StatusModel = sequelize.models.status
+  const HomeModel = sequelize.models.home
 
   for (const region of regionsData) {
     const count = await RegionModel.count({
@@ -60,6 +63,15 @@ const setupDb = async (sequelize) => {
     if (!count) {
       await StatusModel.create({ name: status.name, external_id: status.id })
     }
+  }
+
+  // generate uuid
+  if ((await HomeModel.count()) === 0) {
+    await HomeModel.create({ token: await crypto.randomUUID(), regionId: regionsData[0].id })
+    await HomeModel.create({ token: await crypto.randomUUID(), regionId: regionsData[0].id })
+    await HomeModel.create({ token: await crypto.randomUUID(), regionId: regionsData[1].id })
+    await HomeModel.create({ token: await crypto.randomUUID(), regionId: regionsData[2].id })
+    await HomeModel.create({ token: await crypto.randomUUID(), regionId: regionsData[3].id })
   }
 }
 

@@ -4,6 +4,7 @@ import RegionModel from './models/RegionModel.js'
 import StatusModel from './models/StatusModel.js'
 import setupDb from './setup.js'
 import createCrud from './createCrud.js'
+import HomeModel from './models/HomeModel.js'
 
 const db = (connectionData) => {
   const { password, user, port, name, host } = connectionData
@@ -21,14 +22,17 @@ const db = (connectionData) => {
         const History = await HistoryModel(sequelize)
         const Region = await RegionModel(sequelize)
         const Status = await StatusModel(sequelize)
+        const Home = await HomeModel(sequelize)
 
         Region.hasMany(History, { onDelete: 'cascade', foreignKey: 'regionId', sourceKey: "external_id"})
         History.belongsTo(Region,)
         Status.hasMany(History, { onDelete: 'cascade', foreignKey: 'statusId', sourceKey: "external_id" })
         History.belongsTo(Status,)
+        Region.hasMany(Home, { onDelete: 'cascade', foreignKey: 'regionId',  sourceKey: "external_id" })
+        Home.belongsTo(Region,)
 
-        await sequelize.sync({ force: true })
-        // await sequelize.sync({ alter: true })
+        // await sequelize.sync({ force: true })
+        await sequelize.sync({ alter: true })
 
         await setupDb(sequelize)
 
@@ -38,6 +42,7 @@ const db = (connectionData) => {
           history: createCrud(History),
           status: createCrud(Status),
           region: createCrud(Region),
+          home: createCrud(Home),
         }
 
         return handlers

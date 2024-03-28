@@ -1,7 +1,7 @@
 {
   "db": {
     "user": "postgres",
-    "password": "1234",
+    "password": "1111",
     "name": "alarm",
     "host": "localhost",
     "port": 5432
