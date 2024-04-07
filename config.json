@@ -14,7 +14,7 @@
     "shutdownMaxWait": 5000
   },
   "http": {
-    "port": 3000,
+    "port": 8080,
     "host": null
   }
 }

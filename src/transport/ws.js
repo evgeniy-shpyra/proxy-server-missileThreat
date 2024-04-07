@@ -22,26 +22,26 @@ const initWebsocket = async (server, dbHandlers) => {
 
   const subscribes = {}
 
-  server.get('/alarm', { websocket: true }, async (socket, request) => {
-    const token = request.headers['authorization'].split(' ')[1]
+    server.get('/alarm', { websocket: true }, async (socket, request) => {
+      const token = request.headers['authorization'].split(' ')[1]
 
-    subscribes[token] = socket
+      subscribes[token] = socket
 
-    try {
-      socket.on('message', (message) => {
-        console.log(message.toString())
-        socket.send('hi from server')
-        console.log(subscribes)
-      })
+      try {
+        socket.on('message', (message) => {
+          console.log(message.toString())
+          socket.send('hi from server')
+          console.log(subscribes)
+        })
 
-      socket.on('close', () => {
-        console.log('close')
-        subscribes[token] && delete subscribes[token]
-      })
-    } catch (e) {
-      console.log('Ws error', e)
-    }
-  })
+        socket.on('close', () => {
+          console.log('close')
+          subscribes[token] && delete subscribes[token]
+        })
+      } catch (e) {
+        console.log('Ws error', e)
+      }
+    })
 
   const sendStatus = async (regionId, statusId) => {
     const houses = await dbHandlers.home.getAll({ regionId })
