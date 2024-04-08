@@ -12,7 +12,7 @@ const app = async () => {
     const dbHandlers = await db.start()
 
     // server
-    const server = Server(config.http)
+    const server = Server(config.server)
     const wsHandlers = await initWebsocket(server.server, dbHandlers)
     await initHttp(server.server)
 

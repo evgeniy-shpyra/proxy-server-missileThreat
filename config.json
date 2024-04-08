@@ -1,9 +1,9 @@
 {
   "db": {
-    "user": "postgres",
-    "password": "1111",
-    "name": "alarm",
-    "host": "localhost",
+    "user": "user",
+    "password": "pass",
+    "name": "test_db",
+    "host": "postgres_db",
     "port": 5432
   },
   "alarm": {
@@ -13,8 +13,8 @@
   "app": {
     "shutdownMaxWait": 5000
   },
-  "http": {
-    "port": 8080,
-    "host": null
+  "server": {
+    "port": 8000,
+    "host": "0.0.0.0"
   }
 }
