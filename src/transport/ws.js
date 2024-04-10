@@ -28,12 +28,6 @@ const initWebsocket = async (server, dbHandlers) => {
       subscribes[token] = socket
 
       try {
-        socket.on('message', (message) => {
-          console.log(message.toString())
-          socket.send('hi from server')
-          console.log(subscribes)
-        })
-
         socket.on('close', () => {
           console.log('close')
           subscribes[token] && delete subscribes[token]
@@ -43,13 +37,13 @@ const initWebsocket = async (server, dbHandlers) => {
       }
     })
 
-  const sendStatus = async (regionId, statusId) => {
+  const sendStatus = async (regionId, isDanger) => {
     const houses = await dbHandlers.home.getAll({ regionId })
 
     for(const house of houses){
       if(!subscribes[house.token]) continue
       
-      const data = {action: "status", statusId}
+      const data = {action: "status", isDanger}
 
       subscribes[house.token].send(JSON.stringify(data))
       console.log({...data, token: house.token})

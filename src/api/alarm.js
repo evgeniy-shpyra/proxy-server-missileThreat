@@ -34,6 +34,8 @@ const statusesDto = {
   N: { id: 3, name: 'Немає інформації про повітряну тривогу' },
 }
 
+export const missileDangerStatus = 1
+
 const convertActiveResponse = (data) => {
   const states = data.split('')
 

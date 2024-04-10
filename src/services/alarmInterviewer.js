@@ -16,6 +16,7 @@ const alarmInterviewer = (callback, { interval, apiToken }) => {
         if (Date.now() >= time) {
           const data = await alarmApi.getActive()
           if (!data) continue
+          
           callback && callback(data)
           time.setMilliseconds(time.getMilliseconds() + interval)
         }
