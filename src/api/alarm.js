@@ -80,6 +80,7 @@ const api = (token) => {
         return convertedResponse
       } catch (e) {
         console.error('Alarm api error', e)
+        process.exit(1)
         return null
       }
     },
