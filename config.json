@@ -7,7 +7,7 @@
     "port": 5432
   },
   "alarm": {
-    "apiToken": "126fd4a4c5c9548316d82cf8acbf137cf399979aab2203",
+    "apiToken": "",
     "interval": 20000
   },
   "app": {
